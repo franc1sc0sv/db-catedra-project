@@ -1,0 +1,6 @@
+{
+  "enabledPlugins": {
+    "ts-linter@ravn-ai-toolkit": true,
+    "tech-drizzle@ravn-ai-toolkit": true
+  }
+}

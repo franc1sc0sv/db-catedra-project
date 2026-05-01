@@ -1,0 +1,26 @@
+{
+  "name": "@project/db",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./src/schema/*": "./src/schema/*.ts",
+    "./src/*": "./src/*.ts"
+  },
+  "scripts": {
+    "db:generate": "bun --env-file=../../.env node_modules/drizzle-kit/bin.cjs generate",
+    "db:migrate": "bun --env-file=../../.env src/migrate.ts",
+    "db:push": "bun --env-file=../../.env node_modules/drizzle-kit/bin.cjs push",
+    "db:seed": "bun --env-file=../../.env src/seed.ts"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.44.2",
+    "pg": "^8.13.3"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.11.11",
+    "drizzle-kit": "^0.30.4",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}

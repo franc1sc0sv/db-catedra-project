@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["bun"],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./apps/api/node_modules/@types"
+    ],
+    "paths": {
+      "~/*": ["./apps/api/src/*"]
+    }
+  },
+  "include": [
+    "apps/api/src",
+    "packages/auth/src",
+    "packages/db/src",
+    "packages/enums/src"
+  ]
+}

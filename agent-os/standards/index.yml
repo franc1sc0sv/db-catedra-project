@@ -1,0 +1,21 @@
+# Agent OS Standards Index
+
+backend:
+  error-handling:
+    description: throw AppError everywhere; global handler in app.ts; no try/catch in routes or use cases
+  module-registration:
+    description: AppModule class + two manual steps (bootstrap.ts + app.ts) when adding a domain module
+  repository-pattern:
+    description: abstract class as Inversify token; toEntity() mapper required; TxClient on all methods
+  use-case-pattern:
+    description: extend BaseUseCase; execute() auto-wraps in transaction; logic in handle(); bind in module
+
+frontend:
+  entity-schemas:
+    description: Zod schemas + inferred types live in entities/[name]/model/schemas.ts; never inside features
+  fsd-layer-imports:
+    description: views→widgets→features→entities→shared; slices within same layer cannot import each other
+  fsd-public-api:
+    description: every slice has index.ts as its only import point; never import from internal slice paths
+  thin-pages:
+    description: page.tsx parses Next.js params only and renders exactly one view component; no logic or JSX

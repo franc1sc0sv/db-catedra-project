@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+.next/
+dist/
+build/
+out/
+
+# Turbo
+.turbo/
+
+# Node compile cache
+node-compile-cache/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Drizzle
+drizzle/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# TypeScript
+*.tsbuildinfo
+
+# builds
+builds/
+dist/
+
+.next/
+
+
+./worktrees/

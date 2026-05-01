@@ -1,0 +1,19 @@
+{
+  "name": "@project/auth",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./src/*": "./src/*.ts"
+  },
+  "dependencies": {
+    "@project/db": "workspace:*",
+    "better-auth": "^1.2.7"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": { "optional": true }
+  }
+}

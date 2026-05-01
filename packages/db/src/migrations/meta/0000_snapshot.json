@@ -1,0 +1,1365 @@
+{
+  "id": "20d6112e-9f5f-45c0-acd4-0ab52c83ad7d",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.Accounts": {
+      "name": "Accounts",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "accountId": {
+          "name": "accountId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "providerId": {
+          "name": "providerId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "accessToken": {
+          "name": "accessToken",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "refreshToken": {
+          "name": "refreshToken",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "idToken": {
+          "name": "idToken",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "accessTokenExpiresAt": {
+          "name": "accessTokenExpiresAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "refreshTokenExpiresAt": {
+          "name": "refreshTokenExpiresAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "scope": {
+          "name": "scope",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "password": {
+          "name": "password",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "accounts_user_id_idx": {
+          "name": "accounts_user_id_idx",
+          "columns": [
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "Accounts_userId_Users_id_fk": {
+          "name": "Accounts_userId_Users_id_fk",
+          "tableFrom": "Accounts",
+          "tableTo": "Users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.Sessions": {
+      "name": "Sessions",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "expiresAt": {
+          "name": "expiresAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token": {
+          "name": "token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "ipAddress": {
+          "name": "ipAddress",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "userAgent": {
+          "name": "userAgent",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "userId": {
+          "name": "userId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {
+        "sessions_user_id_idx": {
+          "name": "sessions_user_id_idx",
+          "columns": [
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "Sessions_userId_Users_id_fk": {
+          "name": "Sessions_userId_Users_id_fk",
+          "tableFrom": "Sessions",
+          "tableTo": "Users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "Sessions_token_unique": {
+          "name": "Sessions_token_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "token"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.Users": {
+      "name": "Users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "''"
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "emailVerified": {
+          "name": "emailVerified",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": false
+        },
+        "image": {
+          "name": "image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "role": {
+          "name": "role",
+          "type": "user_role",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'patient'"
+        },
+        "accountStatus": {
+          "name": "accountStatus",
+          "type": "account_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'active'"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "Users_email_unique": {
+          "name": "Users_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.Verifications": {
+      "name": "Verifications",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "identifier": {
+          "name": "identifier",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expiresAt": {
+          "name": "expiresAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "updatedAt": {
+          "name": "updatedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "verifications_identifier_idx": {
+          "name": "verifications_identifier_idx",
+          "columns": [
+            {
+              "expression": "identifier",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.MedicalInsurances": {
+      "name": "MedicalInsurances",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "insurerName": {
+          "name": "insurerName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "coverageType": {
+          "name": "coverageType",
+          "type": "coverage_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.Patients": {
+      "name": "Patients",
+      "schema": "",
+      "columns": {
+        "dui": {
+          "name": "dui",
+          "type": "varchar(10)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "firstName": {
+          "name": "firstName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "lastName": {
+          "name": "lastName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "whatsappPhone": {
+          "name": "whatsappPhone",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "birthDate": {
+          "name": "birthDate",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "insuranceId": {
+          "name": "insuranceId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "patients_user_id_idx": {
+          "name": "patients_user_id_idx",
+          "columns": [
+            {
+              "expression": "userId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "patients_insurance_id_idx": {
+          "name": "patients_insurance_id_idx",
+          "columns": [
+            {
+              "expression": "insuranceId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "Patients_userId_Users_id_fk": {
+          "name": "Patients_userId_Users_id_fk",
+          "tableFrom": "Patients",
+          "tableTo": "Users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "Patients_insuranceId_MedicalInsurances_id_fk": {
+          "name": "Patients_insuranceId_MedicalInsurances_id_fk",
+          "tableFrom": "Patients",
+          "tableTo": "MedicalInsurances",
+          "columnsFrom": [
+            "insuranceId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.MedicalRecords": {
+      "name": "MedicalRecords",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "patientDui": {
+          "name": "patientDui",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bloodType": {
+          "name": "bloodType",
+          "type": "blood_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "knownAllergies": {
+          "name": "knownAllergies",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "familyHistory": {
+          "name": "familyHistory",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "chronicConditions": {
+          "name": "chronicConditions",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "openedAt": {
+          "name": "openedAt",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "CURRENT_DATE"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "MedicalRecords_patientDui_Patients_dui_fk": {
+          "name": "MedicalRecords_patientDui_Patients_dui_fk",
+          "tableFrom": "MedicalRecords",
+          "tableTo": "Patients",
+          "columnsFrom": [
+            "patientDui"
+          ],
+          "columnsTo": [
+            "dui"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "MedicalRecords_patientDui_unique": {
+          "name": "MedicalRecords_patientDui_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "patientDui"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.ScheduleEvents": {
+      "name": "ScheduleEvents",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "doctorId": {
+          "name": "doctorId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "eventDate": {
+          "name": "eventDate",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "startTime": {
+          "name": "startTime",
+          "type": "time",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "endTime": {
+          "name": "endTime",
+          "type": "time",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "eventType": {
+          "name": "eventType",
+          "type": "event_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "availabilityStatus": {
+          "name": "availabilityStatus",
+          "type": "availability_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'available'"
+        },
+        "googleEventId": {
+          "name": "googleEventId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "googleHtmlLink": {
+          "name": "googleHtmlLink",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "syncStatus": {
+          "name": "syncStatus",
+          "type": "sync_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'pending'"
+        },
+        "auditUserId": {
+          "name": "auditUserId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "schedule_events_audit_user_id_idx": {
+          "name": "schedule_events_audit_user_id_idx",
+          "columns": [
+            {
+              "expression": "auditUserId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "schedule_events_doctor_date_idx": {
+          "name": "schedule_events_doctor_date_idx",
+          "columns": [
+            {
+              "expression": "doctorId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "eventDate",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "ScheduleEvents_doctorId_Users_id_fk": {
+          "name": "ScheduleEvents_doctorId_Users_id_fk",
+          "tableFrom": "ScheduleEvents",
+          "tableTo": "Users",
+          "columnsFrom": [
+            "doctorId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "ScheduleEvents_auditUserId_Users_id_fk": {
+          "name": "ScheduleEvents_auditUserId_Users_id_fk",
+          "tableFrom": "ScheduleEvents",
+          "tableTo": "Users",
+          "columnsFrom": [
+            "auditUserId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.MedicalAppointments": {
+      "name": "MedicalAppointments",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "eventId": {
+          "name": "eventId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "patientDui": {
+          "name": "patientDui",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bookingReason": {
+          "name": "bookingReason",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bookedAt": {
+          "name": "bookedAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "medical_appointments_patient_dui_idx": {
+          "name": "medical_appointments_patient_dui_idx",
+          "columns": [
+            {
+              "expression": "patientDui",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "MedicalAppointments_eventId_ScheduleEvents_id_fk": {
+          "name": "MedicalAppointments_eventId_ScheduleEvents_id_fk",
+          "tableFrom": "MedicalAppointments",
+          "tableTo": "ScheduleEvents",
+          "columnsFrom": [
+            "eventId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "MedicalAppointments_patientDui_Patients_dui_fk": {
+          "name": "MedicalAppointments_patientDui_Patients_dui_fk",
+          "tableFrom": "MedicalAppointments",
+          "tableTo": "Patients",
+          "columnsFrom": [
+            "patientDui"
+          ],
+          "columnsTo": [
+            "dui"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "MedicalAppointments_eventId_unique": {
+          "name": "MedicalAppointments_eventId_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "eventId"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.ClinicalConsultations": {
+      "name": "ClinicalConsultations",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "recordId": {
+          "name": "recordId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "appointmentId": {
+          "name": "appointmentId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "presentedSymptoms": {
+          "name": "presentedSymptoms",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "bloodPressure": {
+          "name": "bloodPressure",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "weightKg": {
+          "name": "weightKg",
+          "type": "numeric(5, 2)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "mainDiagnosis": {
+          "name": "mainDiagnosis",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "prescribedTreatment": {
+          "name": "prescribedTreatment",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "doctorPrivateNotes": {
+          "name": "doctorPrivateNotes",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "clinical_consultations_record_id_idx": {
+          "name": "clinical_consultations_record_id_idx",
+          "columns": [
+            {
+              "expression": "recordId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "ClinicalConsultations_recordId_MedicalRecords_id_fk": {
+          "name": "ClinicalConsultations_recordId_MedicalRecords_id_fk",
+          "tableFrom": "ClinicalConsultations",
+          "tableTo": "MedicalRecords",
+          "columnsFrom": [
+            "recordId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "ClinicalConsultations_appointmentId_MedicalAppointments_id_fk": {
+          "name": "ClinicalConsultations_appointmentId_MedicalAppointments_id_fk",
+          "tableFrom": "ClinicalConsultations",
+          "tableTo": "MedicalAppointments",
+          "columnsFrom": [
+            "appointmentId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "ClinicalConsultations_appointmentId_unique": {
+          "name": "ClinicalConsultations_appointmentId_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "appointmentId"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.WhatsAppMessages": {
+      "name": "WhatsAppMessages",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "appointmentId": {
+          "name": "appointmentId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "destinationPhone": {
+          "name": "destinationPhone",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "messageType": {
+          "name": "messageType",
+          "type": "message_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "messageBody": {
+          "name": "messageBody",
+          "type": "varchar(1000)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sentAt": {
+          "name": "sentAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "deliveryStatus": {
+          "name": "deliveryStatus",
+          "type": "delivery_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'sent'"
+        },
+        "whatsappMessageId": {
+          "name": "whatsappMessageId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {
+        "whatsapp_messages_appointment_id_idx": {
+          "name": "whatsapp_messages_appointment_id_idx",
+          "columns": [
+            {
+              "expression": "appointmentId",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "WhatsAppMessages_appointmentId_MedicalAppointments_id_fk": {
+          "name": "WhatsAppMessages_appointmentId_MedicalAppointments_id_fk",
+          "tableFrom": "WhatsAppMessages",
+          "tableTo": "MedicalAppointments",
+          "columnsFrom": [
+            "appointmentId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.account_status": {
+      "name": "account_status",
+      "schema": "public",
+      "values": [
+        "active",
+        "inactive",
+        "suspended"
+      ]
+    },
+    "public.availability_status": {
+      "name": "availability_status",
+      "schema": "public",
+      "values": [
+        "available",
+        "busy",
+        "blocked",
+        "completed",
+        "cancelled"
+      ]
+    },
+    "public.blood_type": {
+      "name": "blood_type",
+      "schema": "public",
+      "values": [
+        "A+",
+        "A-",
+        "B+",
+        "B-",
+        "AB+",
+        "AB-",
+        "O+",
+        "O-"
+      ]
+    },
+    "public.coverage_type": {
+      "name": "coverage_type",
+      "schema": "public",
+      "values": [
+        "basic",
+        "complete",
+        "dental",
+        "vision",
+        "comprehensive"
+      ]
+    },
+    "public.delivery_status": {
+      "name": "delivery_status",
+      "schema": "public",
+      "values": [
+        "sent",
+        "delivered",
+        "read",
+        "failed"
+      ]
+    },
+    "public.event_type": {
+      "name": "event_type",
+      "schema": "public",
+      "values": [
+        "appointment",
+        "block",
+        "vacation",
+        "meeting"
+      ]
+    },
+    "public.message_type": {
+      "name": "message_type",
+      "schema": "public",
+      "values": [
+        "confirmation",
+        "reminder",
+        "cancellation",
+        "rescheduling"
+      ]
+    },
+    "public.sync_status": {
+      "name": "sync_status",
+      "schema": "public",
+      "values": [
+        "pending",
+        "synced",
+        "error"
+      ]
+    },
+    "public.user_role": {
+      "name": "user_role",
+      "schema": "public",
+      "values": [
+        "doctor",
+        "patient",
+        "receptionist"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {
+    "public.DailyScheduleView": {
+      "columns": {
+        "eventId": {
+          "name": "eventId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "doctorId": {
+          "name": "doctorId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "eventDate": {
+          "name": "eventDate",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "startTime": {
+          "name": "startTime",
+          "type": "time",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "endTime": {
+          "name": "endTime",
+          "type": "time",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "availabilityStatus": {
+          "name": "availabilityStatus",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "appointmentId": {
+          "name": "appointmentId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bookingReason": {
+          "name": "bookingReason",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "patientDui": {
+          "name": "patientDui",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "firstName": {
+          "name": "firstName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lastName": {
+          "name": "lastName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "whatsappPhone": {
+          "name": "whatsappPhone",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "definition": "\n  SELECT\n    se.id                 AS \"eventId\",\n    se.\"doctorId\",\n    se.\"eventDate\",\n    se.\"startTime\",\n    se.\"endTime\",\n    se.\"availabilityStatus\",\n    ma.id                 AS \"appointmentId\",\n    ma.\"bookingReason\",\n    p.dui                 AS \"patientDui\",\n    p.\"firstName\",\n    p.\"lastName\",\n    p.\"whatsappPhone\"\n  FROM \"ScheduleEvents\" se\n  LEFT JOIN \"MedicalAppointments\" ma ON ma.\"eventId\" = se.id\n  LEFT JOIN \"Patients\" p             ON p.dui = ma.\"patientDui\"\n  WHERE se.\"eventType\" = 'appointment'\n",
+      "name": "DailyScheduleView",
+      "schema": "public",
+      "isExisting": false,
+      "materialized": false
+    },
+    "public.PatientFullRecordView": {
+      "columns": {
+        "dui": {
+          "name": "dui",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "firstName": {
+          "name": "firstName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lastName": {
+          "name": "lastName",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "birthDate": {
+          "name": "birthDate",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "whatsappPhone": {
+          "name": "whatsappPhone",
+          "type": "varchar(20)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "insurerName": {
+          "name": "insurerName",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "coverageType": {
+          "name": "coverageType",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "recordId": {
+          "name": "recordId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bloodType": {
+          "name": "bloodType",
+          "type": "varchar(5)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "knownAllergies": {
+          "name": "knownAllergies",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "familyHistory": {
+          "name": "familyHistory",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "chronicConditions": {
+          "name": "chronicConditions",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "recordOpenedAt": {
+          "name": "recordOpenedAt",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lastConsultationId": {
+          "name": "lastConsultationId",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lastDiagnosis": {
+          "name": "lastDiagnosis",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lastTreatment": {
+          "name": "lastTreatment",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "lastVisitDate": {
+          "name": "lastVisitDate",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "definition": "\n  SELECT\n    p.dui,\n    p.\"firstName\",\n    p.\"lastName\",\n    p.\"birthDate\",\n    p.\"whatsappPhone\",\n    mi.\"insurerName\",\n    mi.\"coverageType\",\n    mr.id                      AS \"recordId\",\n    mr.\"bloodType\",\n    mr.\"knownAllergies\",\n    mr.\"familyHistory\",\n    mr.\"chronicConditions\",\n    mr.\"openedAt\"              AS \"recordOpenedAt\",\n    cc.id                      AS \"lastConsultationId\",\n    cc.\"mainDiagnosis\"         AS \"lastDiagnosis\",\n    cc.\"prescribedTreatment\"   AS \"lastTreatment\",\n    ma.\"bookedAt\"              AS \"lastVisitDate\"\n  FROM \"Patients\" p\n  LEFT JOIN \"MedicalInsurances\" mi ON mi.id = p.\"insuranceId\"\n  LEFT JOIN \"MedicalRecords\"    mr ON mr.\"patientDui\" = p.dui\n  LEFT JOIN LATERAL (\n    SELECT cc.*, ma.\"bookedAt\"\n    FROM \"ClinicalConsultations\" cc\n    JOIN \"MedicalAppointments\"   ma ON ma.id = cc.\"appointmentId\"\n    WHERE cc.\"recordId\" = mr.id\n    ORDER BY ma.\"bookedAt\" DESC\n    LIMIT 1\n  ) cc ON true\n  LEFT JOIN \"MedicalAppointments\" ma ON ma.id = cc.\"appointmentId\"\n",
+      "name": "PatientFullRecordView",
+      "schema": "public",
+      "isExisting": false,
+      "materialized": false
+    }
+  },
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

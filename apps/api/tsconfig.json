@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["bun"],
+    "paths": {
+      "~/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "src",
+    "../../packages/auth/src",
+    "../../packages/db/src",
+    "../../packages/enums/src"
+  ]
+}
